@@ -45,14 +45,16 @@ def generate_pdf_report(user_id: int, incomes: list, expenses: list) -> io.Bytes
         data = [list(income_table.columns)] + income_table.values.tolist()
         table = Table(data, hAlign='LEFT')
         table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.lightblue),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            # Стиль заголовка
+            ('BACKGROUND', (0, 0), (-1, 0), colors.blue),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
             ('FONTSIZE', (0, 0), (-1, 0), 12),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+            # Стиль данных
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),  # белый фон
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),   # чёрный текст
             ('GRID', (0, 0), (-1, -1), 1, colors.grey),
         ]))
         elements.append(table)
@@ -66,14 +68,16 @@ def generate_pdf_report(user_id: int, incomes: list, expenses: list) -> io.Bytes
         data = [list(expense_table.columns)] + expense_table.values.tolist()
         table = Table(data, hAlign='LEFT')
         table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.salmon),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            # Стиль заголовка
+            ('BACKGROUND', (0, 0), (-1, 0), colors.red),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
             ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
             ('FONTSIZE', (0, 0), (-1, 0), 12),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.lavenderblush),
-            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
+            # Стиль данных
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),  # белый фон
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),   # чёрный текст
             ('GRID', (0, 0), (-1, -1), 1, colors.grey),
         ]))
         elements.append(table)
