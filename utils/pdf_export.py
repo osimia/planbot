@@ -52,6 +52,7 @@ def generate_pdf_report(user_id: int, incomes: list, expenses: list) -> io.Bytes
             ('FONTSIZE', (0, 0), (-1, 0), 12),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
             ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
             ('GRID', (0, 0), (-1, -1), 1, colors.grey),
         ]))
         elements.append(table)
@@ -72,6 +73,7 @@ def generate_pdf_report(user_id: int, incomes: list, expenses: list) -> io.Bytes
             ('FONTSIZE', (0, 0), (-1, 0), 12),
             ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
             ('BACKGROUND', (0, 1), (-1, -1), colors.lavenderblush),
+            ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
             ('GRID', (0, 0), (-1, -1), 1, colors.grey),
         ]))
         elements.append(table)
