@@ -65,12 +65,14 @@ async def statistics_handler(message: types.Message, state):
         report_lines.append(f"{m}: {v:.2f}")
     report_text = "\n".join(report_lines)
     await message.answer(report_text, parse_mode="HTML")
-    # Генерируем PDF-отчёт и отправляем
-    from utils.pdf_export import generate_pdf_report
+    
+    # Генерируем Excel-отчёт с подробными данными и отправляем
+    from utils.excel_export import generate_excel_report
     from aiogram.types import BufferedInputFile
-    pdf_file = generate_pdf_report(user_id, incomes_list, expenses_list)
-    pdf_bytes = pdf_file.getvalue()
-    await message.answer_document(BufferedInputFile(pdf_bytes, filename="finance_report.pdf"), caption="Скачать отчет по категориям и дням в PDF")
+    excel_file = await generate_excel_report(user_id, incomes_list, expenses_list)
+    excel_bytes = excel_file.getvalue()
+    await message.answer_document(BufferedInputFile(excel_bytes, filename="finance_report.xlsx"), 
+                               caption="Скачать подробный отчет по доходам и расходам в Excel")
 
 import random
 
