@@ -23,9 +23,10 @@ async def start_income(message: types.Message, state: FSMContext):
 @router.message(IncomeStates.amount, F.text.regexp(r"^\d+(\.\d{1,2})?$"))
 async def income_amount(message: types.Message, state: FSMContext):
     await state.update_data(amount=message.text)
+    await state.update_data(currency="TJS")  # Валюта по умолчанию
     from utils.keyboards import scenario_kb
-    await message.answer("Выберите валюту:", reply_markup=scenario_kb(["TJS", "USD", "EUR", "RUB"]))
-    await state.set_state(IncomeStates.currency)
+    await message.answer("Выберите категорию:", reply_markup=scenario_kb(["Зарплата", "Фриланс"]))
+    await state.set_state(IncomeStates.category)
 
 @router.message(IncomeStates.amount, Command("cancel"))
 @router.message(IncomeStates.amount, F.text.lower() == "главное меню")
@@ -37,22 +38,8 @@ async def income_cancel_amount(message: types.Message, state: FSMContext):
 async def income_amount_invalid(message: types.Message):
     await message.answer("Пожалуйста, введите корректную сумму (например, 5000 или 5000.50) или нажмите 'Главное меню' для выхода.")
 
-@router.message(IncomeStates.currency, F.text.in_(["TJS", "USD", "EUR", "RUB"]))
-async def income_currency(message: types.Message, state: FSMContext):
-    await state.update_data(currency=message.text)
-    from utils.keyboards import scenario_kb
-    await message.answer("Выберите категорию:", reply_markup=scenario_kb(["Зарплата", "Фриланс"]))
-    await state.set_state(IncomeStates.category)
 
-@router.message(IncomeStates.currency, Command("cancel"))
-@router.message(IncomeStates.currency, F.text.lower() == "главное меню")
-async def income_cancel_currency(message: types.Message, state: FSMContext):
-    await state.clear()
-    await message.answer("Главное меню:", reply_markup=main_menu_kb())
 
-@router.message(IncomeStates.currency)
-async def income_currency_invalid(message: types.Message):
-    await message.answer("Пожалуйста, выберите валюту из списка: TJS, USD, EUR, RUB или нажмите 'Главное меню' для выхода.")
 
 @router.message(IncomeStates.category, F.text.in_(["Зарплата", "Фриланс"]))
 async def income_category(message: types.Message, state: FSMContext):
