@@ -4,7 +4,7 @@ def main_menu_kb():
     return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="Добавить доход"), KeyboardButton(text="Добавить расход")],
-            [KeyboardButton(text="Создать напоминание"), KeyboardButton(text="Статистика")],
+            [KeyboardButton(text="Статистика")],
             [KeyboardButton(text="Советы")],
             [KeyboardButton(text="Главное меню")],
         ],

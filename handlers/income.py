@@ -25,7 +25,8 @@ async def income_amount(message: types.Message, state: FSMContext):
     await state.update_data(amount=message.text)
     await state.update_data(currency="TJS")  # Валюта по умолчанию
     from utils.keyboards import scenario_kb
-    await message.answer("Выберите категорию:", reply_markup=scenario_kb(["Зарплата", "Фриланс"]))
+    categories = ["Зарплата", "Фриланс", "Подарок", "Продажа", "Бонус", "Стипендия", "Инвестиции", "Другое"]
+    await message.answer("Выберите категорию:", reply_markup=scenario_kb(categories))
     await state.set_state(IncomeStates.category)
 
 @router.message(IncomeStates.amount, Command("cancel"))
@@ -41,13 +42,13 @@ async def income_amount_invalid(message: types.Message):
 
 
 
-@router.message(IncomeStates.category, F.text.in_(["Зарплата", "Фриланс"]))
+@router.message(IncomeStates.category)
 async def income_category(message: types.Message, state: FSMContext):
     data = await state.get_data()
     amount = float(data["amount"])
-    currency = data["currency"]
     category = message.text
     user_id = message.from_user.id
+    currency = data.get("currency", "TJS")
     # Сохраняем в базу данных
     pool = await db.get_pool()
     async with pool.acquire() as conn:
@@ -59,7 +60,7 @@ async def income_category(message: types.Message, state: FSMContext):
             """,
             user_id, amount, currency, category
         )
-    await message.answer(f"Доход {amount} {currency} ({category}) добавлен!", reply_markup=main_menu_kb())
+    await message.answer(f"Доход {amount} ({category}) добавлен!", reply_markup=main_menu_kb())
     await state.clear()
 
 @router.message(IncomeStates.category, Command("cancel"))
