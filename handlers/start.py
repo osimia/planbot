@@ -67,8 +67,10 @@ async def statistics_handler(message: types.Message, state):
     await message.answer(report_text, parse_mode="HTML")
     # Генерируем PDF-отчёт и отправляем
     from utils.pdf_export import generate_pdf_report
+    from aiogram.types import BufferedInputFile
     pdf_file = generate_pdf_report(user_id, incomes_list, expenses_list)
-    await message.answer_document(InputFile(pdf_file, filename="finance_report.pdf"), caption="Скачать отчет по категориям и дням в PDF")
+    pdf_bytes = pdf_file.getvalue()
+    await message.answer_document(BufferedInputFile(pdf_bytes, filename="finance_report.pdf"), caption="Скачать отчет по категориям и дням в PDF")
 
 import random
 
